@@ -88,31 +88,54 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const signUp = async (email, password, fullName) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName
-          }
-        }
-      })
+  // src/context/AuthContext.jsx - Update signUp function
 
-      if (error) throw error
-      
-      if (data.user) {
-        // Profile will be created automatically by the onAuthStateChange listener
-        toast.success('Account created successfully! Please check your email for verification.')
+const signUp = async (email, password, fullName, location = '') => {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          location: location
+        }
+      }
+    })
+
+    if (error) throw error
+    
+    if (data.user) {
+      // Create profile in database immediately
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: data.user.id,
+            full_name: fullName,
+            role: 'individual',
+            location: location || 'Unknown'
+          }
+        ])
+        .select()
+        .single()
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError)
+        // Don't throw error - user is created, profile can be created later
+      } else {
+        setProfile(profileData)
       }
       
-      return data
-    } catch (error) {
-      toast.error(error.message)
-      throw error
+      toast.success('Account created successfully! Please check your email for verification.')
     }
+    
+    return data
+  } catch (error) {
+    toast.error(error.message)
+    throw error
   }
+}
 
   const signIn = async (email, password) => {
     try {
