@@ -1,27 +1,34 @@
-import { FaChartLine, FaGlobe, FaHandsHelping, FaHeart, FaShieldAlt, FaUsers } from "react-icons/fa";
+import {
+  FaChartLine,
+  FaGlobe,
+  FaHandsHelping,
+  FaHeart,
+  FaShieldAlt,
+  FaUsers,
+} from "react-icons/fa";
 
 const About = () => {
   const team = [
     {
-      name: "Ahmed Ali",
+      name: "Tasnim Kulle",
       role: "Founder & CEO",
       bio: "Passionate about community development with 10+ years of experience in social work",
       image:
-        "https://chatgpt.com/backend-api/estuary/content?id=file_00000000e63471f498ae3e6dbf3ef5f9&cp=pri&ma=90000&ts=20452&p=igh&cid=1&sig=c4eeb5fe581ed7403225ab824f9298ccfb8903c8e1a18ef88d88116c3eca05e9",
+        "https://images.unsplash.com/photo-1603665696936-1331903666e5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzE5fHxwcm9maWxlJTIwcGljdHVyZXxlbnwwfHwwfHx8MA%3D%3D",
     },
     {
       name: "Fatima Hassan",
       role: "Community Manager",
       bio: "Dedicated to connecting volunteers with those in need across local communities",
       image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop",
+        "https://plus.unsplash.com/premium_photo-1723802616105-fa220fd0991d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fHByb2ZpbGUlMjBwaWN0dXJlJTIwZm9yJTIwZ2lybHMlMjBtdXNsaW18ZW58MHx8MHx8fDA%3D",
     },
     {
       name: "Omar Mohamed",
       role: "Tech Lead",
       bio: "Building technology solutions to empower communities and facilitate connections",
       image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w-400&h=400&fit=crop",
+        "https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D",
     },
   ];
   const values = [
@@ -79,7 +86,7 @@ const About = () => {
         <h2 className="text-3xl font-bold mb-6 text-center">Our Mission</h2>
         <p className="text-lg text-gray-700 max-w-4xl mx-auto text-center">
           Our mission is to create a platform that connects volunteers with
-          individuals and families in need, fostering a spirit of community and   
+          individuals and families in need, fostering a spirit of community and
           mutual support. We believe that by working together, we can make a
           meaningful difference in the lives of those around us.
         </p>
@@ -87,7 +94,9 @@ const About = () => {
       {/* Core Values */}
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-6 text-center">Our Core Values</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            Our Core Values
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((value, index) => (
               <div key={index} className="bg-gray-50 p-6 rounded-lg shadow">
@@ -99,10 +108,49 @@ const About = () => {
               </div>
             ))}
           </div>
-
         </div>
       </div>
+     
+  
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 className="text-3xl font-bold mb-6 text-center">Meet the Team</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {team.map((member, index) => (
+            <div
+              key={index}
+              className="bg-white p-6 rounded-lg shadow text-center"
+            >
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+              />
+              <h3 className="text-xl font-semibold">{member.name}</h3>
+              <p className="text-blue-600 font-medium">{member.role}</p>
+              <p className="text-gray-700 mt-2">{member.bio}</p>
+            </div>
+          ))}
+        </div>
       </div>
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-blue-500 to-teal-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Join Our Community
+          </h2>
+          <p className="text-lg text-white mb-8 max-w-3xl mx-auto">
+            Whether you want to volunteer your time or need assistance, we're
+            here to help. Together, we can make a difference.
+          </p>
+          <a
+            href="/signup"
+            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+          >
+            Get Involved
+          </a>
+        </div>
+      </div>
+    </div>
   );
 };
 export default About;
