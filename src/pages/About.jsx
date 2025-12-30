@@ -6,6 +6,7 @@ import {
   FaShieldAlt,
   FaUsers,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const team = [
@@ -142,12 +143,12 @@ const About = () => {
             Whether you want to volunteer your time or need assistance, we're
             here to help. Together, we can make a difference.
           </p>
-          <a
-            href="/signup"
-            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+          <Link
+            to="/signup"
+            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors mr-4"
           >
-            Get Involved
-          </a>
+            Get Involve
+          </Link>
         </div>
       </div>
     </div>

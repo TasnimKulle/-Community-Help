@@ -14,6 +14,7 @@ import HelpRequests from './pages/HelpRequests'
 
 import { SignIn } from './pages/SignIn'
 import { SignUp } from './pages/SignUp'
+import { Footer } from './components/Footer'
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
+          <Footer />
           <Toaster position="top-right" />
         </div>
       </AuthProvider>
