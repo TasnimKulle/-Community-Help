@@ -17,7 +17,7 @@ export default function Dashboard() {
   const { user, profile } = useAuth();
   const [helpRequests, setHelpRequests] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newRequest, setNewRequest] = useState({
     title: "",
