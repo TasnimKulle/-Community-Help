@@ -46,24 +46,24 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white relative">
+    <footer className="bg-blue-600 text-white relative">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="space-y-4">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                <FaHeart className="text-white text-xl" />
+              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center mr-3">
+                <FaHeart className="text-blue-600 text-xl" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold">CommunityHelp</h2>
-                <p className="text-blue-300 text-sm">
+                <p className="text-white text-sm">
                   Connecting Hearts, Building Futures
                 </p>
               </div>
             </div>
-            <p className="text-gray-300">
+            <p className="text-gray-50">
               A platform dedicated to connecting volunteers with those in need.
               Together, we can make our communities stronger and more
               supportive.
@@ -76,7 +76,8 @@ export const Footer = () => {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2 hover:bg-blue-600 rounded-lg"
+                  className="text-gray-50 transition-colors duration-200 p-2 hover:bg-white 
+                  hover:text-blue-600 rounded-lg"
                   aria-label={link.label}
                 >
                   {link.icon}
@@ -87,7 +88,7 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
+            <h3 className="text-lg font-semibold mb-6 border-b border-white pb-2">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -95,9 +96,9 @@ export const Footer = () => {
                 <li key={index}>
                   <Link
                     to={link.path}
-                    className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
+                    className="text-white hover:text-blue-50 transition-colors duration-200 flex items-center group"
                   >
-                    <span className="w-2 h-2 bg-blue-600 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
+                    <span className="w-2 h-2 bg-white rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
                     {link.name}
                   </Link>
                 </li>
@@ -107,7 +108,7 @@ export const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
+            <h3 className="text-lg font-semibold mb-6 border-b border-white pb-2">
               Resources
             </h3>
             <ul className="space-y-3">
@@ -115,9 +116,9 @@ export const Footer = () => {
                 <li key={index}>
                   <Link
                     to={resource.path}
-                    className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
+                    className="text-gray-50hover:text-blue-50transition-colors duration-200 flex items-center group"
                   >
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
+                    <span className="w-2 h-2 bg-white rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
                     {resource.name}
                   </Link>
                 </li>
@@ -127,14 +128,14 @@ export const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
+            <h3 className="text-lg font-semibold mb-6 border-b border-white pb-2">
               Contact Us
             </h3>
             <ul className="space-y-4">
               {contactInfo.map((contact, index) => (
                 <li key={index} className="flex items-start space-x-3">
-                  <div className="text-blue-400 mt-1">{contact.icon}</div>
-                  <span className="text-gray-300">{contact.text}</span>
+                  <div className="text-blue-50 mt-1">{contact.icon}</div>
+                  <span className="text-gray-50">{contact.text}</span>
                 </li>
               ))}
             </ul>
@@ -148,11 +149,11 @@ export const Footer = () => {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-4 py-2 bg-blue-950 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
                 <button
                   type="submit"
-                  className="bg-blue-600 px-4 py-2 rounded-r-lg hover:bg-blue-700 transition-colors duration-200"
+                  className="bg-blue-100 text-blue-950 px-4 py-2 rounded-r-lg hover:bg-blue-700 hover:text-white transition-colors duration-200"
                 >
                   Subscribe
                 </button>
@@ -163,35 +164,35 @@ export const Footer = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="bg-gray-950 py-6">
+      <div className="bg-blue-950 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-400 text-sm mb-4 md:mb-0">
+            <div className="text-gray-200 text-sm mb-4 md:mb-0">
               &copy; {currentYear} CommunityHelp Platform. All rights reserved.
             </div>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <Link
                 to="/privacy"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-200 hover:text-white transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 to="/terms"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-200 hover:text-white transition-colors"
               >
                 Terms of Service
               </Link>
               <Link
                 to="/cookies"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-200 hover:text-white transition-colors"
               >
                 Cookie Policy
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-200 hover:text-white transition-colors"
               >
                 Contact Us
               </Link>
