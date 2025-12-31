@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { FaUser, FaBars, FaTimes, FaHome, FaInfoCircle, FaTasks, FaHandsHelping, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaBars, FaTimes, FaHome, FaInfoCircle, FaTasks, FaHandsHelping, FaSignOutAlt, FaHeart } from "react-icons/fa";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +56,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-blue-600 flex items-center">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
-                <span className="text-white font-bold">CH</span>
+                <FaHeart className="text-white text-xl" />
               </div>
               CommunityHelp
             </Link>
