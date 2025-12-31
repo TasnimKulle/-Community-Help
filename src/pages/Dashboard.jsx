@@ -359,7 +359,9 @@ export default function Dashboard() {
                               {request.status}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {new Date(request.created_at).toLocaleDateString()}
+                              {new Date(
+                                request.created_at
+                              ).toLocaleDateString()}
                             </span>
                           </div>
                         </div>
@@ -495,7 +497,9 @@ export default function Dashboard() {
                   <FaHandsHelping className="text-blue-600 text-xl" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">Browse Requests</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    Browse Requests
+                  </h3>
                   <p className="text-sm text-gray-600">Find help requests</p>
                 </div>
               </div>
@@ -509,7 +513,9 @@ export default function Dashboard() {
                   <FaUsers className="text-green-600 text-xl" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">Update Profile</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    Update Profile
+                  </h3>
                   <p className="text-sm text-gray-600">Edit your information</p>
                 </div>
               </div>

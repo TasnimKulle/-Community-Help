@@ -78,7 +78,9 @@ export default function Home() {
             <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
               <FaHandsHelping className="text-blue-600 text-2xl" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-center">Create Requests</h3>
+            <h3 className="text-xl font-semibold mb-2 text-center">
+              Create Requests
+            </h3>
             <p className="text-gray-600 text-center">
               Request help for tasks, projects, or emergencies in your community
             </p>
@@ -88,7 +90,9 @@ export default function Home() {
             <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
               <FaUsers className="text-teal-600 text-2xl" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-center">Join Organizations</h3>
+            <h3 className="text-xl font-semibold mb-2 text-center">
+              Join Organizations
+            </h3>
             <p className="text-gray-600 text-center">
               Connect with local organizations and collaborate on community
               projects
@@ -99,7 +103,9 @@ export default function Home() {
             <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
               <FaTasks className="text-green-600 text-2xl" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-center">Manage Tasks</h3>
+            <h3 className="text-xl font-semibold mb-2 text-center">
+              Manage Tasks
+            </h3>
             <p className="text-gray-600 text-center">
               Track and manage help requests with our intuitive task management
               system
@@ -110,7 +116,9 @@ export default function Home() {
             <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
               <FaChartLine className="text-purple-600 text-2xl" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-center">Track Progress</h3>
+            <h3 className="text-xl font-semibold mb-2 text-center">
+              Track Progress
+            </h3>
             <p className="text-gray-600 text-center">
               Monitor the impact of community help and track completed tasks
             </p>

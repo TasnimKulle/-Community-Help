@@ -12,9 +12,9 @@ import {
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const quickLinks = [

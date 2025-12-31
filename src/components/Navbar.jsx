@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { FaUser, FaBars, FaTimes, FaHome, FaInfoCircle, FaTasks, FaHandsHelping, FaSignOutAlt, FaHeart } from "react-icons/fa";
+import {
+  FaUser,
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaInfoCircle,
+  FaTasks,
+  FaHandsHelping,
+  FaSignOutAlt,
+  FaHeart,
+} from "react-icons/fa";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,13 +30,13 @@ export default function Navbar() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.profile-dropdown')) {
+      if (!event.target.closest(".profile-dropdown")) {
         setIsDropdownOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   // Close mobile menu when route changes
@@ -54,7 +64,10 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-blue-600 flex items-center">
+            <Link
+              to="/"
+              className="text-2xl font-bold text-blue-600 flex items-center"
+            >
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
                 <FaHeart className="text-white text-xl" />
               </div>
@@ -67,9 +80,9 @@ export default function Navbar() {
             <Link
               to="/"
               className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
-                location.pathname === '/' 
-                  ? 'bg-blue-50 text-blue-600' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                location.pathname === "/"
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
               }`}
             >
               <FaHome className="mr-2" />
@@ -78,23 +91,23 @@ export default function Navbar() {
             <Link
               to="/about"
               className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
-                location.pathname === '/about' 
-                  ? 'bg-blue-50 text-blue-600' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                location.pathname === "/about"
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
               }`}
             >
               <FaInfoCircle className="mr-2" />
               About
             </Link>
-            
+
             {isAuthenticated ? (
               <>
                 <Link
                   to="/dashboard"
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
-                    location.pathname === '/dashboard' 
-                      ? 'bg-blue-50 text-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                    location.pathname === "/dashboard"
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                   }`}
                 >
                   <FaUser className="mr-2" />
@@ -103,9 +116,9 @@ export default function Navbar() {
                 <Link
                   to="/help-requests"
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
-                    location.pathname === '/help-requests' 
-                      ? 'bg-blue-50 text-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                    location.pathname === "/help-requests"
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                   }`}
                 >
                   <FaHandsHelping className="mr-2" />
@@ -114,9 +127,9 @@ export default function Navbar() {
                 <Link
                   to="/tasks"
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
-                    location.pathname === '/tasks' 
-                      ? 'bg-blue-50 text-blue-600' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                    location.pathname === "/tasks"
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                   }`}
                 >
                   <FaTasks className="mr-2" />
@@ -132,7 +145,9 @@ export default function Navbar() {
                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                       <FaUser className="text-blue-600" />
                     </div>
-                    <span className="font-medium">{profile?.full_name || "User"}</span>
+                    <span className="font-medium">
+                      {profile?.full_name || "User"}
+                    </span>
                   </button>
 
                   {isDropdownOpen && (
@@ -208,7 +223,7 @@ export default function Navbar() {
               <FaInfoCircle className="mr-3" />
               About
             </Link>
-            
+
             {isAuthenticated ? (
               <>
                 <Link

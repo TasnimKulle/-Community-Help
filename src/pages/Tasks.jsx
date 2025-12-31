@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import { useAuth } from '../context/AuthContext'
-import supabase from '../lib/supabase'
-import toast from 'react-hot-toast'
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import supabase from "../lib/supabase";
+import toast from "react-hot-toast";
 import {
   FaCheck,
   FaClock,
@@ -15,146 +15,157 @@ import {
   FaFilter,
   FaSpinner,
   FaTrash,
-  FaArrowRight
-} from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+  FaArrowRight,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Tasks() {
-  const { user, profile, loading: authLoading } = useAuth()
-  const [tasks, setTasks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('all')
-  const [selectedTask, setSelectedTask] = useState(null)
-  const [showTaskDetails, setShowTaskDetails] = useState(false)
+  const { user, profile, loading: authLoading } = useAuth();
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("all");
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
 
   useEffect(() => {
     if (user) {
-      fetchTasks()
+      fetchTasks();
     }
-  }, [user, filter])
+  }, [user, filter]);
 
   const fetchTasks = async () => {
     try {
-      setLoading(true)
-      
+      setLoading(true);
+
       let query = supabase
-        .from('tasks')
-        .select(`
+        .from("tasks")
+        .select(
+          `
           *,
           help_requests (
             *,
             profiles:user_id (full_name, location)
           ),
           assignee:assigned_to (full_name)
-        `)
-        .order('created_at', { ascending: false })
+        `
+        )
+        .order("created_at", { ascending: false });
 
       // Filter by current user unless admin
-      if (profile?.role !== 'admin') {
-        query = query.eq('assigned_to', user.id)
+      if (profile?.role !== "admin") {
+        query = query.eq("assigned_to", user.id);
       }
 
       // Apply status filter
-      if (filter !== 'all') {
-        query = query.eq('status', filter)
+      if (filter !== "all") {
+        query = query.eq("status", filter);
       }
 
-      const { data, error } = await query
+      const { data, error } = await query;
 
-      if (error) throw error
+      if (error) throw error;
 
-      setTasks(data || [])
+      setTasks(data || []);
     } catch (error) {
-      console.error('Error fetching tasks:', error)
-      toast.error('Failed to load tasks')
+      console.error("Error fetching tasks:", error);
+      toast.error("Failed to load tasks");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleTaskStatus = async (taskId, newStatus) => {
     try {
       const { error } = await supabase
-        .from('tasks')
+        .from("tasks")
         .update({ status: newStatus })
-        .eq('id', taskId)
+        .eq("id", taskId);
 
-      if (error) throw error
+      if (error) throw error;
 
       // If task is completed, also update the help request status
-      if (newStatus === 'done') {
-        const task = tasks.find(t => t.id === taskId)
+      if (newStatus === "done") {
+        const task = tasks.find((t) => t.id === taskId);
         if (task?.help_request_id) {
           await supabase
-            .from('help_requests')
-            .update({ status: 'completed' })
-            .eq('id', task.help_request_id)
+            .from("help_requests")
+            .update({ status: "completed" })
+            .eq("id", task.help_request_id);
         }
       }
 
-      toast.success(`Task marked as ${newStatus.replace('_', ' ')}`)
-      fetchTasks()
+      toast.success(`Task marked as ${newStatus.replace("_", " ")}`);
+      fetchTasks();
     } catch (error) {
-      toast.error('Failed to update task status')
+      toast.error("Failed to update task status");
     }
-  }
+  };
 
   const handleDeleteTask = async (taskId) => {
-    if (!window.confirm('Are you sure you want to delete this task?')) return
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
 
     try {
-      const { error } = await supabase
-        .from('tasks')
-        .delete()
-        .eq('id', taskId)
+      const { error } = await supabase.from("tasks").delete().eq("id", taskId);
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success('Task deleted successfully')
-      fetchTasks()
+      toast.success("Task deleted successfully");
+      fetchTasks();
     } catch (error) {
-      toast.error('Failed to delete task')
+      toast.error("Failed to delete task");
     }
-  }
+  };
 
   const handleViewDetails = (task) => {
-    setSelectedTask(task)
-    setShowTaskDetails(true)
-  }
+    setSelectedTask(task);
+    setShowTaskDetails(true);
+  };
 
   const getStatusIcon = (status) => {
-    switch(status) {
-      case 'pending': return <FaClock className="text-yellow-500" />
-      case 'in_progress': return <FaPlay className="text-blue-500" />
-      case 'done': return <FaCheck className="text-green-500" />
-      default: return <FaClock className="text-gray-500" />
+    switch (status) {
+      case "pending":
+        return <FaClock className="text-yellow-500" />;
+      case "in_progress":
+        return <FaPlay className="text-blue-500" />;
+      case "done":
+        return <FaCheck className="text-green-500" />;
+      default:
+        return <FaClock className="text-gray-500" />;
     }
-  }
+  };
 
   const getStatusColor = (status) => {
-    switch(status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'in_progress': return 'bg-blue-100 text-blue-800'
-      case 'done': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "in_progress":
+        return "bg-blue-100 text-blue-800";
+      case "done":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const getPriorityColor = (priority) => {
-    switch(priority) {
-      case 'high': return 'bg-red-100 text-red-800'
-      case 'medium': return 'bg-yellow-100 text-yellow-800'
-      case 'low': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+    switch (priority) {
+      case "high":
+        return "bg-red-100 text-red-800";
+      case "medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "low":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const stats = {
     total: tasks.length,
-    pending: tasks.filter(t => t.status === 'pending').length,
-    inProgress: tasks.filter(t => t.status === 'in_progress').length,
-    completed: tasks.filter(t => t.status === 'done').length
-  }
+    pending: tasks.filter((t) => t.status === "pending").length,
+    inProgress: tasks.filter((t) => t.status === "in_progress").length,
+    completed: tasks.filter((t) => t.status === "done").length,
+  };
 
   if (authLoading || loading) {
     return (
@@ -164,20 +175,25 @@ export default function Tasks() {
           <p className="text-gray-600">Loading tasks...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please sign in to view tasks</h2>
-          <a href="/signin" className="text-blue-600 hover:text-blue-800 font-medium">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Please sign in to view tasks
+          </h2>
+          <a
+            href="/signin"
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
             Sign In
           </a>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -259,7 +275,7 @@ export default function Tasks() {
               </select>
             </div>
             <div className="text-sm text-gray-500">
-              Showing {tasks.length} task{tasks.length !== 1 ? 's' : ''}
+              Showing {tasks.length} task{tasks.length !== 1 ? "s" : ""}
             </div>
           </div>
         </div>
@@ -269,14 +285,15 @@ export default function Tasks() {
           {tasks.length === 0 ? (
             <div className="p-12 text-center">
               <FaHandsHelping className="text-gray-300 text-6xl mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">No tasks found</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                No tasks found
+              </h3>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                {filter !== 'all' 
+                {filter !== "all"
                   ? 'No tasks match the current filter. Try selecting "All Tasks".'
-                  : "You don't have any assigned tasks yet. Browse help requests to find tasks you can help with!"
-                }
+                  : "You don't have any assigned tasks yet. Browse help requests to find tasks you can help with!"}
               </p>
-              {filter === 'all' && (
+              {filter === "all" && (
                 <Link
                   to="/help-requests"
                   className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
@@ -289,7 +306,10 @@ export default function Tasks() {
           ) : (
             <div className="divide-y divide-gray-200">
               {tasks.map((task) => (
-                <div key={task.id} className="p-6 hover:bg-gray-50 transition-colors">
+                <div
+                  key={task.id}
+                  className="p-6 hover:bg-gray-50 transition-colors"
+                >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-start gap-4">
@@ -298,14 +318,19 @@ export default function Tasks() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                            {task.help_requests?.title || 'Untitled Task'}
+                            {task.help_requests?.title || "Untitled Task"}
                           </h3>
                           <p className="text-gray-600 mb-3 line-clamp-2">
-                            {task.help_requests?.description || 'No description provided'}
+                            {task.help_requests?.description ||
+                              "No description provided"}
                           </p>
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className={`px-3 py-1 text-sm rounded-full ${getStatusColor(task.status)}`}>
-                              {task.status.replace('_', ' ')}
+                            <span
+                              className={`px-3 py-1 text-sm rounded-full ${getStatusColor(
+                                task.status
+                              )}`}
+                            >
+                              {task.status.replace("_", " ")}
                             </span>
                             {task.help_requests?.category && (
                               <span className="px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded-full">
@@ -314,17 +339,22 @@ export default function Tasks() {
                             )}
                             <div className="flex items-center text-sm text-gray-500">
                               <FaUser className="mr-1" />
-                              <span>{task.help_requests?.profiles?.full_name || 'Unknown'}</span>
+                              <span>
+                                {task.help_requests?.profiles?.full_name ||
+                                  "Unknown"}
+                              </span>
                             </div>
                             <div className="flex items-center text-sm text-gray-500">
                               <FaCalendarAlt className="mr-1" />
-                              <span>{new Date(task.created_at).toLocaleDateString()}</span>
+                              <span>
+                                {new Date(task.created_at).toLocaleDateString()}
+                              </span>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex flex-col sm:flex-row gap-2">
                       <button
                         onClick={() => handleViewDetails(task)}
@@ -333,29 +363,32 @@ export default function Tasks() {
                         <FaEye className="mr-2" />
                         View Details
                       </button>
-                      
+
                       <div className="flex gap-2">
-                        {task.status === 'pending' && (
+                        {task.status === "pending" && (
                           <button
-                            onClick={() => handleTaskStatus(task.id, 'in_progress')}
+                            onClick={() =>
+                              handleTaskStatus(task.id, "in_progress")
+                            }
                             className="flex items-center justify-center px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors"
                           >
                             <FaPlay className="mr-2" />
                             Start
                           </button>
                         )}
-                        
-                        {task.status === 'in_progress' && (
+
+                        {task.status === "in_progress" && (
                           <button
-                            onClick={() => handleTaskStatus(task.id, 'done')}
+                            onClick={() => handleTaskStatus(task.id, "done")}
                             className="flex items-center justify-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
                           >
                             <FaCheck className="mr-2" />
                             Complete
                           </button>
                         )}
-                        
-                        {(profile?.role === 'admin' || task.assigned_to === user.id) && (
+
+                        {(profile?.role === "admin" ||
+                          task.assigned_to === user.id) && (
                           <button
                             onClick={() => handleDeleteTask(task.id)}
                             className="flex items-center justify-center px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
@@ -384,9 +417,15 @@ export default function Tasks() {
                       {selectedTask.help_requests?.title}
                     </h3>
                     <div className="flex items-center mt-2 space-x-2">
-                      <span className={`px-3 py-1 text-sm rounded-full ${getStatusColor(selectedTask.status)}`}>
+                      <span
+                        className={`px-3 py-1 text-sm rounded-full ${getStatusColor(
+                          selectedTask.status
+                        )}`}
+                      >
                         {getStatusIcon(selectedTask.status)}
-                        <span className="ml-2">{selectedTask.status.replace('_', ' ')}</span>
+                        <span className="ml-2">
+                          {selectedTask.status.replace("_", " ")}
+                        </span>
                       </span>
                       {selectedTask.help_requests?.category && (
                         <span className="px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded-full">
@@ -406,10 +445,13 @@ export default function Tasks() {
                 <div className="space-y-6">
                   {/* Description */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">
+                      Description
+                    </h4>
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <p className="text-gray-600">
-                        {selectedTask.help_requests?.description || 'No description provided.'}
+                        {selectedTask.help_requests?.description ||
+                          "No description provided."}
                       </p>
                     </div>
                   </div>
@@ -417,12 +459,15 @@ export default function Tasks() {
                   {/* Task Details */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Requester</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2">
+                        Requester
+                      </h4>
                       <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <FaUser className="text-gray-400 mr-3" />
                         <div>
                           <p className="text-gray-900 font-medium">
-                            {selectedTask.help_requests?.profiles?.full_name || 'Unknown'}
+                            {selectedTask.help_requests?.profiles?.full_name ||
+                              "Unknown"}
                           </p>
                           {selectedTask.help_requests?.profiles?.location && (
                             <p className="text-sm text-gray-500">
@@ -434,35 +479,47 @@ export default function Tasks() {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Assigned To</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2">
+                        Assigned To
+                      </h4>
                       <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <FaUser className="text-gray-400 mr-3" />
                         <div>
                           <p className="text-gray-900 font-medium">
-                            {selectedTask.assignee?.full_name || 'You'}
+                            {selectedTask.assignee?.full_name || "You"}
                           </p>
-                          <p className="text-sm text-gray-500">Assigned Volunteer</p>
+                          <p className="text-sm text-gray-500">
+                            Assigned Volunteer
+                          </p>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Created Date</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2">
+                        Created Date
+                      </h4>
                       <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <FaCalendarAlt className="text-gray-400 mr-3" />
                         <div>
                           <p className="text-gray-900 font-medium">
-                            {new Date(selectedTask.created_at).toLocaleDateString()}
+                            {new Date(
+                              selectedTask.created_at
+                            ).toLocaleDateString()}
                           </p>
                           <p className="text-sm text-gray-500">
-                            {new Date(selectedTask.created_at).toLocaleTimeString()}
+                            {new Date(
+                              selectedTask.created_at
+                            ).toLocaleTimeString()}
                           </p>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Task ID</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2">
+                        Task ID
+                      </h4>
                       <div className="p-3 bg-gray-50 rounded-lg">
                         <p className="text-gray-900 font-mono text-sm">
                           {selectedTask.id.substring(0, 8)}...
@@ -473,17 +530,40 @@ export default function Tasks() {
 
                   {/* Status Timeline */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-4">Status Timeline</h4>
+                    <h4 className="font-semibold text-gray-900 mb-4">
+                      Status Timeline
+                    </h4>
                     <div className="flex items-center space-x-4">
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-full ${selectedTask.status === 'pending' || selectedTask.status === 'in_progress' || selectedTask.status === 'done' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                          selectedTask.status === "pending" ||
+                          selectedTask.status === "in_progress" ||
+                          selectedTask.status === "done"
+                            ? "bg-blue-100 text-blue-600"
+                            : "bg-gray-100 text-gray-400"
+                        }`}
+                      >
                         <FaClock />
                       </div>
                       <div className="flex-1 h-1 bg-gray-200"></div>
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-full ${selectedTask.status === 'in_progress' || selectedTask.status === 'done' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                          selectedTask.status === "in_progress" ||
+                          selectedTask.status === "done"
+                            ? "bg-blue-100 text-blue-600"
+                            : "bg-gray-100 text-gray-400"
+                        }`}
+                      >
                         <FaPlay />
                       </div>
                       <div className="flex-1 h-1 bg-gray-200"></div>
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-full ${selectedTask.status === 'done' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                          selectedTask.status === "done"
+                            ? "bg-green-100 text-green-600"
+                            : "bg-gray-100 text-gray-400"
+                        }`}
+                      >
                         <FaCheck />
                       </div>
                     </div>
@@ -502,36 +582,37 @@ export default function Tasks() {
                     >
                       Close
                     </button>
-                    
-                    {selectedTask.status === 'pending' && (
+
+                    {selectedTask.status === "pending" && (
                       <button
                         onClick={() => {
-                          handleTaskStatus(selectedTask.id, 'in_progress')
-                          setShowTaskDetails(false)
+                          handleTaskStatus(selectedTask.id, "in_progress");
+                          setShowTaskDetails(false);
                         }}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Start Task
                       </button>
                     )}
-                    
-                    {selectedTask.status === 'in_progress' && (
+
+                    {selectedTask.status === "in_progress" && (
                       <button
                         onClick={() => {
-                          handleTaskStatus(selectedTask.id, 'done')
-                          setShowTaskDetails(false)
+                          handleTaskStatus(selectedTask.id, "done");
+                          setShowTaskDetails(false);
                         }}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                       >
                         Mark Complete
                       </button>
                     )}
-                    
-                    {(profile?.role === 'admin' || selectedTask.assigned_to === user.id) && (
+
+                    {(profile?.role === "admin" ||
+                      selectedTask.assigned_to === user.id) && (
                       <button
                         onClick={() => {
-                          handleDeleteTask(selectedTask.id)
-                          setShowTaskDetails(false)
+                          handleDeleteTask(selectedTask.id);
+                          setShowTaskDetails(false);
                         }}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                       >
@@ -546,5 +627,5 @@ export default function Tasks() {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import { useAuth } from '../context/AuthContext'
-import supabase from '../lib/supabase'
-import toast from 'react-hot-toast'
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import supabase from "../lib/supabase";
+import toast from "react-hot-toast";
 import {
   FaBuilding,
   FaUsers,
@@ -12,131 +12,133 @@ import {
   FaPlus,
   FaEdit,
   FaTrash,
-  FaSearch
-} from 'react-icons/fa'
+  FaSearch,
+} from "react-icons/fa";
 
 export default function Organizations() {
-  const { profile } = useAuth()
-  const [organizations, setOrganizations] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [editingOrg, setEditingOrg] = useState(null)
+  const { profile } = useAuth();
+  const [organizations, setOrganizations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editingOrg, setEditingOrg] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    contact_email: '',
-    location: '',
-    phone: '',
-    website: ''
-  })
+    name: "",
+    description: "",
+    contact_email: "",
+    location: "",
+    phone: "",
+    website: "",
+  });
 
   useEffect(() => {
-    fetchOrganizations()
-  }, [])
+    fetchOrganizations();
+  }, []);
 
   const fetchOrganizations = async () => {
     try {
-      setLoading(true)
-      
+      setLoading(true);
+
       const { data, error } = await supabase
-        .from('organizations')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .from("organizations")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (error) throw error
+      if (error) throw error;
 
-      setOrganizations(data || [])
+      setOrganizations(data || []);
     } catch (error) {
-      console.error('Error fetching organizations:', error)
-      toast.error('Failed to load organizations')
+      console.error("Error fetching organizations:", error);
+      toast.error("Failed to load organizations");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       if (editingOrg) {
         // Update existing organization
         const { error } = await supabase
-          .from('organizations')
+          .from("organizations")
           .update(formData)
-          .eq('id', editingOrg.id)
+          .eq("id", editingOrg.id);
 
-        if (error) throw error
-        toast.success('Organization updated successfully!')
+        if (error) throw error;
+        toast.success("Organization updated successfully!");
       } else {
         // Create new organization
         const { error } = await supabase
-          .from('organizations')
-          .insert([formData])
+          .from("organizations")
+          .insert([formData]);
 
-        if (error) throw error
-        toast.success('Organization created successfully!')
+        if (error) throw error;
+        toast.success("Organization created successfully!");
       }
 
-      setShowCreateForm(false)
-      setEditingOrg(null)
+      setShowCreateForm(false);
+      setEditingOrg(null);
       setFormData({
-        name: '',
-        description: '',
-        contact_email: '',
-        location: '',
-        phone: '',
-        website: ''
-      })
-      fetchOrganizations()
+        name: "",
+        description: "",
+        contact_email: "",
+        location: "",
+        phone: "",
+        website: "",
+      });
+      fetchOrganizations();
     } catch (error) {
-      toast.error('Failed to save organization')
-      console.error(error)
+      toast.error("Failed to save organization");
+      console.error(error);
     }
-  }
+  };
 
   const handleEdit = (org) => {
-    setEditingOrg(org)
+    setEditingOrg(org);
     setFormData({
       name: org.name,
       description: org.description,
       contact_email: org.contact_email,
       location: org.location,
-      phone: org.phone || '',
-      website: org.website || ''
-    })
-    setShowCreateForm(true)
-  }
+      phone: org.phone || "",
+      website: org.website || "",
+    });
+    setShowCreateForm(true);
+  };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this organization?')) return
+    if (!window.confirm("Are you sure you want to delete this organization?"))
+      return;
 
     try {
       const { error } = await supabase
-        .from('organizations')
+        .from("organizations")
         .delete()
-        .eq('id', id)
+        .eq("id", id);
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success('Organization deleted successfully')
-      fetchOrganizations()
+      toast.success("Organization deleted successfully");
+      fetchOrganizations();
     } catch (error) {
-      toast.error('Failed to delete organization')
+      toast.error("Failed to delete organization");
     }
-  }
+  };
 
-  const filteredOrgs = organizations.filter(org =>
-    org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    org.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    org.location?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredOrgs = organizations.filter(
+    (org) =>
+      org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      org.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      org.location?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -146,21 +148,23 @@ export default function Organizations() {
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Organizations</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Organizations
+              </h1>
               <p className="text-gray-600 mt-2">
                 Browse and connect with community organizations
               </p>
             </div>
-            {profile?.role === 'admin' && (
+            {profile?.role === "admin" && (
               <button
                 onClick={() => {
-                  setEditingOrg(null)
-                  setShowCreateForm(!showCreateForm)
+                  setEditingOrg(null);
+                  setShowCreateForm(!showCreateForm);
                 }}
                 className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <FaPlus className="mr-2" />
-                {editingOrg ? 'Edit Organization' : 'Add Organization'}
+                {editingOrg ? "Edit Organization" : "Add Organization"}
               </button>
             )}
           </div>
@@ -170,7 +174,7 @@ export default function Organizations() {
         {showCreateForm && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 className="text-xl font-bold mb-4">
-              {editingOrg ? 'Edit Organization' : 'Add New Organization'}
+              {editingOrg ? "Edit Organization" : "Add New Organization"}
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -182,7 +186,9 @@ export default function Organizations() {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Organization name"
                   />
@@ -195,7 +201,12 @@ export default function Organizations() {
                     type="email"
                     required
                     value={formData.contact_email}
-                    onChange={(e) => setFormData({...formData, contact_email: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        contact_email: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="contact@organization.org"
                   />
@@ -207,7 +218,9 @@ export default function Organizations() {
                   <input
                     type="text"
                     value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="City, Country"
                   />
@@ -219,13 +232,15 @@ export default function Organizations() {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="+1234567890"
                   />
                 </div>
               </div>
-              
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description *
@@ -233,7 +248,9 @@ export default function Organizations() {
                 <textarea
                   required
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows="4"
                   placeholder="Describe the organization's mission and activities..."
@@ -247,7 +264,9 @@ export default function Organizations() {
                 <input
                   type="url"
                   value={formData.website}
-                  onChange={(e) => setFormData({...formData, website: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, website: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://organization.org"
                 />
@@ -257,16 +276,16 @@ export default function Organizations() {
                 <button
                   type="button"
                   onClick={() => {
-                    setShowCreateForm(false)
-                    setEditingOrg(null)
+                    setShowCreateForm(false);
+                    setEditingOrg(null);
                     setFormData({
-                      name: '',
-                      description: '',
-                      contact_email: '',
-                      location: '',
-                      phone: '',
-                      website: ''
-                    })
+                      name: "",
+                      description: "",
+                      contact_email: "",
+                      location: "",
+                      phone: "",
+                      website: "",
+                    });
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                 >
@@ -276,7 +295,7 @@ export default function Organizations() {
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
-                  {editingOrg ? 'Update' : 'Create'} Organization
+                  {editingOrg ? "Update" : "Create"} Organization
                 </button>
               </div>
             </form>
@@ -302,19 +321,21 @@ export default function Organizations() {
           <div className="bg-white rounded-xl shadow p-8 text-center">
             <FaBuilding className="text-gray-400 text-6xl mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {searchTerm ? 'No organizations found' : 'No organizations yet'}
+              {searchTerm ? "No organizations found" : "No organizations yet"}
             </h3>
             <p className="text-gray-600">
-              {searchTerm 
-                ? 'Try adjusting your search terms'
-                : 'Be the first to add an organization!'
-              }
+              {searchTerm
+                ? "Try adjusting your search terms"
+                : "Be the first to add an organization!"}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredOrgs.map((org) => (
-              <div key={org.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div
+                key={org.id}
+                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+              >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
@@ -326,12 +347,12 @@ export default function Organizations() {
                           {org.name}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {org.location || 'Location not specified'}
+                          {org.location || "Location not specified"}
                         </p>
                       </div>
                     </div>
-                    
-                    {profile?.role === 'admin' && (
+
+                    {profile?.role === "admin" && (
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(org)}
@@ -357,7 +378,7 @@ export default function Organizations() {
                     {org.contact_email && (
                       <div className="flex items-center text-sm text-gray-500">
                         <FaEnvelope className="mr-2" />
-                        <a 
+                        <a
                           href={`mailto:${org.contact_email}`}
                           className="hover:text-blue-600"
                         >
@@ -365,11 +386,11 @@ export default function Organizations() {
                         </a>
                       </div>
                     )}
-                    
+
                     {org.phone && (
                       <div className="flex items-center text-sm text-gray-500">
                         <FaPhone className="mr-2" />
-                        <a 
+                        <a
                           href={`tel:${org.phone}`}
                           className="hover:text-blue-600"
                         >
@@ -377,11 +398,11 @@ export default function Organizations() {
                         </a>
                       </div>
                     )}
-                    
+
                     {org.website && (
                       <div className="flex items-center text-sm text-gray-500">
                         <FaGlobe className="mr-2" />
-                        <a 
+                        <a
                           href={org.website}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -391,7 +412,7 @@ export default function Organizations() {
                         </a>
                       </div>
                     )}
-                    
+
                     {org.location && (
                       <div className="flex items-center text-sm text-gray-500">
                         <FaMapMarkerAlt className="mr-2" />
@@ -431,7 +452,7 @@ export default function Organizations() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-xl shadow p-6">
             <div className="flex items-center">
               <div className="bg-green-100 p-3 rounded-lg">
@@ -443,7 +464,7 @@ export default function Organizations() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-xl shadow p-6">
             <div className="flex items-center">
               <div className="bg-purple-100 p-3 rounded-lg">
@@ -458,5 +479,5 @@ export default function Organizations() {
         </div>
       </div>
     </div>
-  )
+  );
 }

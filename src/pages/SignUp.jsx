@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { FaUser, FaEnvelope, FaLock, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";  
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaMapMarkerAlt,
+  FaSpinner,
+} from "react-icons/fa";
 import toast from "react-hot-toast";
 
 export const SignUp = () => {
@@ -22,22 +28,29 @@ export const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-    
+
     if (formData.password.length < 6) {
       toast.error("Password must be at least 6 characters");
       return;
     }
-    
+
     try {
       setLoading(true);
-      await signUp(formData.email, formData.password, formData.fullName, formData.location);
-      toast.success("Account created successfully! Please check your email for verification.");
+      await signUp(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.location
+      );
+      toast.success(
+        "Account created successfully! Please check your email for verification."
+      );
       navigate("/signin");
     } catch (error) {
       console.error("Error during sign up:", error);
@@ -62,7 +75,10 @@ export const SignUp = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Full Name *
               </label>
               <div className="relative">
@@ -83,7 +99,10 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email address *
               </label>
               <div className="relative">
@@ -105,7 +124,10 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="location"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Location
               </label>
               <div className="relative">
@@ -125,7 +147,10 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password *
               </label>
               <div className="relative">
@@ -146,7 +171,10 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Confirm Password *
               </label>
               <div className="relative">
