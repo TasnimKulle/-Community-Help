@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FaUser, FaEnvelope, FaLock, FaMapMarkerAlt } from "react-icons/fa";  
+import { useNavigate, Link } from "react-router-dom";
+import { FaUser, FaEnvelope, FaLock, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";  
 import toast from "react-hot-toast";
 
 export const SignUp = () => {
@@ -19,33 +18,38 @@ export const SignUp = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //validation
+    
+    // Validation
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
+    
     if (formData.password.length < 6) {
-      alert("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters");
       return;
     }
+    
     try {
       setLoading(true);
-      await signUp(formData.email, formData.password,formData.fullName, formData.location);
-      toast.success("Account created successfully!");
+      await signUp(formData.email, formData.password, formData.fullName, formData.location);
+      toast.success("Account created successfully! Please check your email for verification.");
       navigate("/signin");
-  }catch(error){
-    console.error("Error during sign up:", error);
-    toast.error("Error creating account: " + error.message);
-  }finally{
-    setLoading(false);
+    } catch (error) {
+      console.error("Error during sign up:", error);
+      toast.error(error.message || "Error creating account");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  }}
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-8 animate-fade-in">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Create Your Account
@@ -58,8 +62,8 @@ export const SignUp = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="fullName" className="sr-only">
-                Full Name
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                Full Name *
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -79,8 +83,8 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email address *
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -101,7 +105,7 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="location" className="sr-only">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
                 Location
               </label>
               <div className="relative">
@@ -121,8 +125,8 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                Password *
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -142,8 +146,8 @@ export const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="sr-only">
-                Confirm Password
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password *
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -187,9 +191,16 @@ export const SignUp = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? "Creating Account..." : "Sign Up"}
+              {loading ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Creating Account...
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </div>
         </form>
@@ -222,15 +233,15 @@ export const SignUp = () => {
             <button
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              onClick={() => toast.info("Google sign up coming soon!")}
             >
-              <span className="sr-only">Sign up with Google</span>
               Google
             </button>
             <button
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              onClick={() => toast.info("GitHub sign up coming soon!")}
             >
-              <span className="sr-only">Sign up with GitHub</span>
               GitHub
             </button>
           </div>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 export const SignIn = () => {
@@ -11,42 +10,49 @@ export const SignIn = () => {
     email: "",
     password: "",
   });
+  
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       await signIn(formData.email, formData.password);
       toast.success("Signed in successfully!");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Error during sign in:", error);
-      toast.error("Error signing in: " + error.message);
+      toast.error(error.message || "Error signing in");
     } finally {
       setLoading(false);
     }
   };
+
   const handleDemoLogin = async () => {
     try {
       setLoading(true);
       await signIn("demo@example.com", "demo123");
       toast.success("Signed in to demo account!");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Error during demo sign in:", error);
-      toast.error("Error signing in to demo account: " + error.message);
+      toast.error("Demo account not available. Please sign up.");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-8 animate-fade-in">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Welcome Back
@@ -59,7 +65,7 @@ export const SignIn = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email address
               </label>
               <div className="relative">
@@ -81,7 +87,7 @@ export const SignIn = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
@@ -133,16 +139,23 @@ export const SignIn = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
             </button>
 
             <button
               type="button"
               onClick={handleDemoLogin}
               disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
             >
               Try Demo Account
             </button>
@@ -177,15 +190,15 @@ export const SignIn = () => {
             <button
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              onClick={() => toast.info("Google sign in coming soon!")}
             >
-              <span className="sr-only">Sign in with Google</span>
               Google
             </button>
             <button
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              onClick={() => toast.info("GitHub sign in coming soon!")}
             >
-              <span className="sr-only">Sign in with GitHub</span>
               GitHub
             </button>
           </div>
