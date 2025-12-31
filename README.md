@@ -1,16 +1,44 @@
-# React + Vite
+# 🤝 CommunityHelp Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CommunityHelp is a modern community support web platform designed to help people connect, request assistance, manage tasks, and collaborate effectively within their community.
 
-Currently, two official plugins are available:
+The project focuses on simplicity, accessibility, and secure user authentication using modern web technologies.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Live Demo
+🔗https://community-help-psi.vercel.app/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📂 GitHub Repository
+🔗 https://github.com/TasnimKulle/-Community-Help
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+- 🔐 User Authentication (Sign Up & Sign In)
+- 🛡️ Protected Routes for authenticated users
+- 🏠 Home & About Pages
+- 📊 User Dashboard
+- 👤 User Profile Management
+- 🤝 Help Requests System
+- ✅ Task Management
+- 📱 Fully Responsive Design
+- 💾 Real-time Database Integration
+- ⚡ Fast Performance with Vite
+
+---
+
+## 🧰 Technologies Used
+- **React.js**
+- **Vite**
+- **Tailwind CSS**
+- **Supabase (Authentication & Database)**
+- **Context API**
+- **JavaScript (ES6+)**
+
+---
+by Tasnim kulle 
+
+
