@@ -7,27 +7,36 @@ import {
   FaInstagram,
   FaLinkedin,
   FaTwitter,
+  FaArrowUp,
 } from "react-icons/fa";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const quickLinks = [
-    { name: "Home", href: "/" },
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Requests", href: "/requests" },
-    { name: "About", href: "/about" },
+    { name: "Home", path: "/" },
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Help Requests", path: "/help-requests" },
+    { name: "About", path: "/about" },
   ];
+
   const contactInfo = [
     { icon: <FaMapMarkerAlt />, text: "252 Community St, Mogadishu, Somalia" },
     { icon: <FaPhone />, text: "+252 61 5620743" },
     { icon: <FaEnvelope />, text: "info@communityhelp.so" },
   ];
+
   const resources = [
-    { name: "Help Center", href: "/help-center" },
-    { name: "Privacy Policy", href: "/privacy-policy" },
-    { name: "Terms of Service", href: "/terms-of-service" },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Help Center", path: "/help-center" },
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms of Service", path: "/terms-of-service" },
+    { name: "Contact Us", path: "/contact" },
   ];
+
   const socialLinks = [
     { icon: <FaFacebook />, url: "https://facebook.com", label: "Facebook" },
     { icon: <FaTwitter />, url: "https://twitter.com", label: "Twitter" },
@@ -35,8 +44,9 @@ export const Footer = () => {
     { icon: <FaLinkedin />, url: "https://linkedin.com", label: "LinkedIn" },
     { icon: <FaGithub />, url: "https://github.com", label: "GitHub" },
   ];
+
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-900 text-white relative">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -66,7 +76,7 @@ export const Footer = () => {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2 hover:bg-blue-600 rounded-lg"
                   aria-label={link.label}
                 >
                   {link.icon}
@@ -74,6 +84,7 @@ export const Footer = () => {
               ))}
             </div>
           </div>
+
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
@@ -93,6 +104,7 @@ export const Footer = () => {
               ))}
             </ul>
           </div>
+
           {/* Resources */}
           <div>
             <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
@@ -112,6 +124,7 @@ export const Footer = () => {
               ))}
             </ul>
           </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-6 border-b border-blue-600 pb-2">
@@ -145,60 +158,55 @@ export const Footer = () => {
                 </button>
               </form>
             </div>
-            {/* Bottom bar */}
-
-           
           </div>
-          
         </div>
-        
       </div>
-       <div className="bg-gray-950 py-6">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row justify-between items-center">
-                  <div className="text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; {currentYear} CommunityHelp Platform. All rights
-                    reserved.
-                  </div>
 
-                  <div className="flex flex-wrap justify-center gap-6 text-sm">
-                    <Link
-                      to="/privacy"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Privacy Policy
-                    </Link>
-                    <Link
-                      to="/terms"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Terms of Service
-                    </Link>
-                    <Link
-                      to="/cookies"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Cookie Policy
-                    </Link>
-                    <Link
-                      to="/contact"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      Contact Us
-                    </Link>
-                  </div>
-                </div>
-              </div>
+      {/* Bottom bar */}
+      <div className="bg-gray-950 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-gray-400 text-sm mb-4 md:mb-0">
+              &copy; {currentYear} CommunityHelp Platform. All rights reserved.
             </div>
-             {/* Back to Top Button */}
+
+            <div className="flex flex-wrap justify-center gap-6 text-sm">
+              <Link
+                to="/privacy"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                to="/cookies"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Cookie Policy
+              </Link>
+              <Link
+                to="/contact"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Back to Top Button */}
       <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={scrollToTop}
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-110 z-50"
         aria-label="Back to top"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
+        <FaArrowUp className="w-5 h-5" />
       </button>
     </footer>
   );
