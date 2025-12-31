@@ -39,6 +39,26 @@ The project focuses on simplicity, accessibility, and secure user authentication
 - **JavaScript (ES6+)**
 
 ---
-by Tasnim kulle 
+## 🎯 Project Purpose
+The main goal of CommunityHelp is to:
+- Strengthen community collaboration
+- Provide a centralized platform for help requests
+- Enable secure user management
+- Improve digital access to community support services
+
+---
+
+## 👩‍💻 Developer
+**Developed by:**  
+**Tasnim kulle**
+---
+
+## 📬 Contact
+For suggestions, feedback, or collaboration:
+- GitHub: https://github.com/TasnimKulle"
+
+---
+
+⭐ If you find this project useful, please give it a star on GitHub!
 
 
